@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "setup:db": "node src/config/setup.js",
+    "dev": "tsx  watch src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/cors": "^11.0.1",
+    "fastify": "^5.4.0",
+    "openai": "^5.8.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.3"
+  }
+}
