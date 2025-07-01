@@ -22,7 +22,7 @@ export class InvoicesService {
         const invoice = await this.invoicesRepository.findById(invoiceId)
         if (invoice?.payedAt) return
 
-        await this.invoicesRepository.update(invoiceId, {
+         await this.invoicesRepository.update(invoiceId, {
             status: 'paid',
             payedAt: new Date()
         })
@@ -34,7 +34,7 @@ export class InvoicesService {
             throw new BadRequestError('Invoice not paid','INVOICE_NOT_PAID')
         }
 
-        await this.invoicesRepository.update(invoiceId, {
+         await this.invoicesRepository.update(invoiceId, {
             status: 'refund',
             refundedAt: new Date()
         })

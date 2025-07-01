@@ -3,7 +3,7 @@ import { PrismaClient } from "../../generated/prisma";
 
 
 export class InvoicesRepository {
-    constructor(private readonly db: PrismaClient) { }
+    constructor(private readonly prisma: PrismaClient) { }
 
     async create(payload: {
         amount: number,
@@ -16,7 +16,7 @@ export class InvoicesRepository {
             customerId
         } = payload
 
-        const res = await this.db.invoice.create({
+        const res = await this.prisma.invoice.create({
             data: {
                 status: 'open',
                 createdAt: new Date(),
@@ -29,7 +29,7 @@ export class InvoicesRepository {
     }
     
     async find() {
-        const res = await this.db.invoice.findMany({
+        const res = await this.prisma.invoice.findMany({
             include:{
                 customer:true
             }
@@ -38,7 +38,7 @@ export class InvoicesRepository {
     }
 
     async findById(id: number) {
-        const res = await this.db.invoice.findFirst({
+        const res = await this.prisma.invoice.findFirst({
             where: {
                 id
             }
@@ -47,7 +47,7 @@ export class InvoicesRepository {
     }
 
     async update(invoiceId: number, payload: Record<string, unknown>) {
-        await this.db.invoice.update({
+        await this.prisma.invoice.update({
             data: payload,
             where: {
                 id: invoiceId

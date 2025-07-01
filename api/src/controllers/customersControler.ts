@@ -9,6 +9,4 @@ export class CustomersControler {
 
         return reply.send({ data: customers })
     }
-
-
 }

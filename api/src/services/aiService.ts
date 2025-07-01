@@ -1,49 +1,37 @@
 import OpenAI from 'openai'
 
 export class AIService {
-    protected client: OpenAI;
+    protected openAi: OpenAI;
 
     constructor() {
-        // this.client = new OpenAI({
-        //     baseURL: 'https://openrouter.ai/api/v1',
-        //     apiKey: '',
-        //     defaultHeaders: {
-        //         'HTTP-Referer': 'http://maciel.com', // Optional. Site URL for rankings on openrouter.ai.
-        //         'X-Title': '<Maciel AI', // Optional. Site title for rankings on openrouter.ai.
-        //     },
-        // })
+        this.openAi = new OpenAI({
+            baseURL: 'https://openrouter.ai/api/v1',
+            apiKey: process.env.OPENROUTER_API_KEY,
+        })
     }
-    async generateCommand(command: string) {
-        // const result = await this.client.responses.create({
-        //     model: 'gpt-4.1',
-        //     input: command
-        // })
 
-        const htmlTemplate = `
-           <table border="1">
-                <thead>
-                    <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    <td>1</td>
-                    <td>Ana</td>
-                    </tr>
-                    <tr>
-                    <td>2</td>
-                    <td>Lucas</td>
-                    </tr>
-                    <tr>
-                    <td>3</td>
-                    <td>João</td>
-                    </tr>
-                </tbody>
-            </table>
-        `
+    async generateCommand(command: string,invoicesJson:unknown) {
+        // https://medium.com/data-science-in-your-pocket/mcp-servers-using-chatgpt-cd8455e6cbe1
 
-        return htmlTemplate
+   
+        const result = await this.openAi.chat.completions.create({
+            model: 'gpt-4.1',
+            messages:[
+                {
+                    role: "system",
+                    content: "Você é um assistente que responde perguntas com base nos dados JSON fornecidos."
+                  },
+                  {
+                    role: "user",
+                    content: `Aqui está o JSON com faturas: \n\n${JSON.stringify(invoicesJson, null, 2)}`
+                  },
+                  {
+                    role: "user",
+                    content: command
+                  }
+            ]
+        })
+
+        return result
     }
 }
