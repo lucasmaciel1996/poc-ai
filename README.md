@@ -21,7 +21,10 @@
       "command": "node",
       "args": [
         "PATH/poc-ia/mcp-server/build/server.js"
-      ]
+      ],
+      "env": {
+        "INVOICE_API_URL":"http://localhost:3000"
+      }
     }
   }
 }

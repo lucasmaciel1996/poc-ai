@@ -23,10 +23,10 @@ class MCPServer {
             title: 'List all invoice',
             description: 'Give a customerId return all list of invoices',
             inputSchema: {
-                customerId: zod_1.z.string(),
+                customerId: zod_1.z.number(),
             }
         }, async ({ customerId }) => {
-            const res = await fetch(`http://localhost:3000/invoices/customers/${customerId}`, {
+            const res = await fetch(`${process.env.INVOICE_API_URL}/invoices/customers/${customerId}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -37,6 +37,49 @@ class MCPServer {
                 content: [{ type: 'text', text: JSON.stringify(data.data) }]
             };
         });
+        this.server.registerTool('refund_invoice', {
+            title: 'Refund one invoice',
+            description: 'Give a invoiceId when a status is paid refund the invocie',
+            inputSchema: {
+                invoiceId: zod_1.z.number(),
+            }
+        }, async ({ invoiceId }) => {
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/refund`, 'POST');
+            return {
+                content: [{ type: 'text', text: JSON.stringify(res.data) }]
+            };
+        });
+        this.server.registerTool('pay_invoice', {
+            title: 'Pay one invoice',
+            description: 'Give a invoiceId pay one invocie',
+            inputSchema: {
+                invoiceId: zod_1.z.number(),
+            }
+        }, async ({ invoiceId }) => {
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/refund`, 'POST');
+            return {
+                content: [{ type: 'text', text: JSON.stringify(res.data) }]
+            };
+        });
+        this.server.registerTool('list_customers', {
+            title: 'List all customers',
+            description: 'Return all customers created',
+        }, async () => {
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/customers`, 'GET');
+            return {
+                content: [{ type: 'text', text: JSON.stringify(res.data) }]
+            };
+        });
+    }
+    async makeRequestAPi(url, method) {
+        const res = await fetch(url, {
+            method,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        const data = await res.json();
+        return data;
     }
     async start() {
         const transport = new stdio_js_1.StdioServerTransport();

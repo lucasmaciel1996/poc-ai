@@ -2,20 +2,29 @@ import { useEffect, useState } from 'react'
 
 import './App.css'
 import { runCommand } from './services/aiCommand'
+import { formatDate, formatMoney } from './utils/format'
 
 
 function App() {
   const [command, setCommand] = useState<string>('')
   const [result, setResult] = useState({ data: '' })
   const [loading, setLoading] = useState(false)
-  const [invoices, setInvoices] = useState<Array<{ id: string, amount: number, status: string }>>([])
+  const [invoices, setInvoices] = useState<Array<{
+    id: number,
+    amount: number,
+    status: string,
+    dueDate: string,
+    payedAt: string,
+    refundedAt: string,
+    createdAt: string,
+  }>>([])
   const [refreshInterval, setRefreshInterval] = useState(10);
 
 
   useEffect(() => {
     if (refreshInterval > 0) {
       const intervalId = setInterval(() => {
-        window.location.reload();
+        handleInvoices()
       }, refreshInterval * 1000); // convert seconds to ms
 
       return () => clearInterval(intervalId); // cleanup on unmount or interval change
@@ -36,14 +45,10 @@ function App() {
   }
 
   async function handleInvoices() {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/invoices/customers/851bbbf8-ba8a-47a4-b1ba-94bbecb443e4`)
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/invoices/customers/9`)
     const json = await res.json()
-    console.log(json)
-    setInvoices([{
-      id: '1q211',
-      amount: 100,
-      status: 'open'
-    }])
+
+    setInvoices(json.data)
   }
 
   return (
@@ -68,16 +73,22 @@ function App() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Amount</th>
               <th>Status</th>
+              <th>Amount</th>
+              <th>DueDate</th>
+              <th>payedAt</th>
+              <th>RefundeAt</th>
             </tr>
           </thead>
           <tbody>
             {invoices.map((inv) => (
               <tr key={inv.id}>
                 <td>{inv.id}</td>
-                <td>{inv.amount}</td>
                 <td>{inv.status}</td>
+                <td>{formatMoney(inv.amount)}</td>
+                <td>{formatDate(inv.dueDate)}</td>
+                <td>{formatDate(inv.payedAt)}</td>
+                <td>{formatDate(inv.refundedAt)}</td>
               </tr>
             ))}
           </tbody>

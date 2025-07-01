@@ -1,3 +1,7 @@
+
+import dotEnv from 'dotenv'
+dotEnv.config()
+
 import { MCPServer } from "./mc-server";
 
 const server = new MCPServer()
