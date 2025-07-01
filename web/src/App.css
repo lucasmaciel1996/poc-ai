@@ -1,32 +1,56 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   text-align: center;
   width: 100%;
-  margin: 0 2rem;
 }
 
-.card {
-  padding: .9em;
+main {
   display: flex;
-  flex-direction: column;
-  margin: .7rem 0;
-  border-radius: 8px;
+  height: 100vh;
+  padding: .4rem;
+
+  aside {
+    box-shadow: 2px 0 5px rgb(0, 0, 0,0.05);
+    width: 80%;
+    padding: 2rem .5rem;
+    
+
+    table,th,td {
+      width: 80%;
+      border: 1px solid #ccc;
+      border-collapse: collapse;
+      
+      th,td{
+       padding: .5rem;
+       text-align: left;
+      }
+    }
+  }
+
+  section {
+    display: 1;
+    padding: 2rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+
+    textarea {
+      border-radius:8px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      padding: .5rem;
+      width: 100%;
+
+      &:hover{
+        border-color: #646cff;
+      }
+    }
+    
+    div{
+      margin-top: 2rem;
+      width: 100%;
+    }
+  }
 }
 
-
-.card > textarea {
-  border-radius:8px;
-  font-weight: bold;
-  font-size: 1.2rem;
-  padding: .5rem 0.3rem;
-  margin: .5rem 0;
-}
-
-.card > textarea:hover{
-  border-color: #646cff;
-}
-
-img {
-  height: 200px;
-}

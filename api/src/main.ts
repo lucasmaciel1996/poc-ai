@@ -3,16 +3,20 @@ import { container } from './container'
 import { InvoicesControler } from './controllers/invoicesControler'
 
 import { AIControler } from './controllers/aiControler'
+import { CustomersControler } from './controllers/customersControler'
 
 const app = fastify({ logger: true })
 
 const invoiceController = container.get<InvoicesControler>('InvoicesControler')
 const aiControler = container.get<AIControler>('AIControler')
+const customersControler = container.get<CustomersControler>('CustomersControler')
 
 app.get('/invoices/customers/:customerId', invoiceController.findInvoicesByCustomerId.bind(invoiceController))
 app.post('/invoices/:invoiceId/pay', invoiceController.pay.bind(invoiceController))
 app.post('/invoices/:invoiceId/refund', invoiceController.refund.bind(invoiceController))
 
+
+app.get('/customers', customersControler.find.bind(customersControler))
 
 app.post('/ai', aiControler.generateCommand.bind(aiControler))
 

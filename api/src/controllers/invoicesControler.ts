@@ -5,25 +5,23 @@ export class InvoicesControler {
     constructor(private readonly invoicesService: InvoicesService) { }
 
     async findInvoicesByCustomerId(request: FastifyRequest, reply: FastifyReply) {
-        const { customerId } = request.params as Record<string, string>
-
-        const invoices = await this.invoicesService.findByCustomerId(customerId)
-        
+        const { customerId } = request.params as Record<string, number>
+        const invoices = await this.invoicesService.findByCustomerId(Number(customerId))
         return reply.send({ data: invoices })
     }
 
     async pay(request: FastifyRequest, reply: FastifyReply) {
-        const { invoiceId } = request.params as Record<string, string>
+        const { invoiceId } = request.params as Record<string, number>
 
-        await this.invoicesService.pay(invoiceId)
+        await this.invoicesService.pay(Number(invoiceId))
         
         return reply.send()
     }
 
     async refund(request: FastifyRequest, reply: FastifyReply) {
-        const { invoiceId } = request.params as Record<string, string>
+        const { invoiceId } = request.params as Record<string, number>
 
-        await this.invoicesService.refund(invoiceId)
+        await this.invoicesService.refund(Number(invoiceId))
         
         return reply.send()
     }
