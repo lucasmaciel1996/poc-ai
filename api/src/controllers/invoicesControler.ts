@@ -4,6 +4,24 @@ import { InvoicesService } from '../services/invoicesService'
 export class InvoicesControler {
     constructor(private readonly invoicesService: InvoicesService) { }
 
+    async create(request: FastifyRequest, reply: FastifyReply) {
+        const { 
+            amount,
+            customerId,
+         } = request.body as Record<string, number>
+
+         const { 
+            dueDate,
+         } = request.body as Record<string, string>
+         
+        await this.invoicesService.create({
+            amount,
+            customerId,
+            dueDate
+        })
+        return reply.send()
+    }
+
     async find(__: FastifyRequest, reply: FastifyReply) {
         const invoices = await this.invoicesService.find()
         return reply.send({ data: invoices })

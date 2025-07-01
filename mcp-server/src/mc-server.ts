@@ -8,15 +8,15 @@ export class MCPServer {
     constructor() {
         console.log('[SETUP] Initializing MCPServer...')
 
-        console.log('ENV',process.env.INVOICE_API_URL)
+        console.log('ENV', process.env.INVOICE_API_URL)
 
         this.server = new McpServer({
             name: 'ai-mcp-server',
             version: '0.0.1',
-        },{
-            capabilities:{
-                resources:{},
-                tools:{}
+        }, {
+            capabilities: {
+                resources: {},
+                tools: {}
             }
         })
 
@@ -24,33 +24,64 @@ export class MCPServer {
     }
 
     private setupToolHandlers() {
-        this.server.registerTool('list_invoices', {
-            title: 'List all invoice',
-            description: 'List all list of invoices with customer',
-        }, async () => {
-            const res = await fetch(`${process.env.INVOICE_API_URL}/invoices`,{
-                method:'GET',
-                headers:{
-                  'Accept':'application/json'  
+
+        this.server.registerTool('create_invoice', {
+            title: 'Create a new invoice',
+            description: 'Create a new invoice for customer',
+            inputSchema: {
+                amount: z.number(),
+                customerId: z.number(),
+                dueDate: z.date(),
+            }
+        }, async ({
+            amount,
+            customerId,
+            dueDate
+        }) => {
+            const res = await fetch(`${process.env.INVOICE_API_URL}/invoices`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    amount,
+                    customerId,
+                    dueDate
+                }),
+                headers: {
+                    'Accept': 'application/json'
                 }
             })
             const data = await res.json()
 
             return {
-                content: [{ type:'text',text: JSON.stringify(data.data)} ]
+                content: [{ type: 'text', text: JSON.stringify(data.data) }]
             }
         })
-         this.server.registerTool('refund_invoice', {
+        this.server.registerTool('list_invoices', {
+            title: 'List all invoice',
+            description: 'List all list of invoices with customer',
+        }, async () => {
+            const res = await fetch(`${process.env.INVOICE_API_URL}/invoices`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            const data = await res.json()
+
+            return {
+                content: [{ type: 'text', text: JSON.stringify(data.data) }]
+            }
+        })
+        this.server.registerTool('refund_invoice', {
             title: 'Refund one invoice',
             description: 'Give a invoiceId when a status is paid refund the invocie',
             inputSchema: {
                 invoiceId: z.number(),
             }
         }, async ({ invoiceId }) => {
-            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/refund`,'POST')
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/refund`, 'POST')
 
             return {
-                content: [{ type:'text',text: JSON.stringify(res.data)} ]
+                content: [{ type: 'text', text: JSON.stringify(res.data) }]
             }
         })
 
@@ -61,10 +92,10 @@ export class MCPServer {
                 invoiceId: z.number(),
             }
         }, async ({ invoiceId }) => {
-            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/refund`,'POST')
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/pay`, 'POST')
 
             return {
-                content: [{ type:'text',text: JSON.stringify(res.data)} ]
+                content: [{ type: 'text', text: JSON.stringify(res.data) }]
             }
         })
 
@@ -72,20 +103,20 @@ export class MCPServer {
             title: 'List all customers',
             description: 'Return all customers created',
         }, async () => {
-            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/customers`,'GET')
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/customers`, 'GET')
 
             return {
-                content: [{ type:'text',text: JSON.stringify(res.data)} ]
+                content: [{ type: 'text', text: JSON.stringify(res.data) }]
             }
         })
     }
 
 
-    private  async makeRequestAPi(url:string,method:'GET'|'POST'){
-        const res = await fetch(url,{
+    private async makeRequestAPi(url: string, method: 'GET' | 'POST') {
+        const res = await fetch(url, {
             method,
-            headers:{
-              'Accept':'application/json'  
+            headers: {
+                'Accept': 'application/json'
             }
         })
         const data = await res.json()

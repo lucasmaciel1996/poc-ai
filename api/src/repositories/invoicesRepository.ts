@@ -5,6 +5,29 @@ import { PrismaClient } from "../../generated/prisma";
 export class InvoicesRepository {
     constructor(private readonly db: PrismaClient) { }
 
+    async create(payload: {
+        amount: number,
+        dueDate: string,
+        customerId: number
+    }) {
+        const {
+            amount,
+            dueDate,
+            customerId
+        } = payload
+
+        const res = await this.db.invoice.create({
+            data: {
+                status: 'open',
+                createdAt: new Date(),
+                amount,
+                dueDate: new Date(dueDate),
+                customerId
+            }
+        })
+        return res
+    }
+    
     async find() {
         const res = await this.db.invoice.findMany({
             include:{

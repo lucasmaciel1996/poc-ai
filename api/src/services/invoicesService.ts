@@ -6,6 +6,14 @@ import { InvoicesRepository } from '../repositories/invoicesRepository'
 export class InvoicesService {
     constructor(private readonly invoicesRepository: InvoicesRepository) { }
 
+    async create(payload: {
+        amount: number,
+        dueDate: string,
+        customerId: number
+    }) {
+        return await this.invoicesRepository.create(payload)
+    }
+
     async find() {
         return await this.invoicesRepository.find()
     }
