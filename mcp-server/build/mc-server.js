@@ -19,19 +19,32 @@ class MCPServer {
         this.setupToolHandlers();
     }
     setupToolHandlers() {
+        this.server.registerTool('create_invoice', {
+            title: 'Create a new invoice',
+            description: 'Create a new invoice for customer',
+            inputSchema: {
+                amount: zod_1.z.number(),
+                customerId: zod_1.z.number(),
+                dueDate: zod_1.z.date(),
+            }
+        }, async ({ amount, customerId, dueDate }) => {
+            const body = JSON.stringify({
+                amount,
+                customerId,
+                dueDate
+            });
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices`, 'POST', body);
+            return {
+                content: [{ type: 'text', text: JSON.stringify(res) }]
+            };
+        });
         this.server.registerTool('list_invoices', {
             title: 'List all invoice',
             description: 'List all list of invoices with customer',
         }, async () => {
-            const res = await fetch(`${process.env.INVOICE_API_URL}/invoices`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            const data = await res.json();
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices`, 'GET');
             return {
-                content: [{ type: 'text', text: JSON.stringify(data.data) }]
+                content: [{ type: 'text', text: JSON.stringify(res) }]
             };
         });
         this.server.registerTool('refund_invoice', {
@@ -43,7 +56,7 @@ class MCPServer {
         }, async ({ invoiceId }) => {
             const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/refund`, 'POST');
             return {
-                content: [{ type: 'text', text: JSON.stringify(res.data) }]
+                content: [{ type: 'text', text: JSON.stringify(res) }]
             };
         });
         this.server.registerTool('pay_invoice', {
@@ -53,9 +66,9 @@ class MCPServer {
                 invoiceId: zod_1.z.number(),
             }
         }, async ({ invoiceId }) => {
-            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/refund`, 'POST');
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/pay`, 'POST');
             return {
-                content: [{ type: 'text', text: JSON.stringify(res.data) }]
+                content: [{ type: 'text', text: JSON.stringify(res) }]
             };
         });
         this.server.registerTool('list_customers', {
@@ -64,24 +77,31 @@ class MCPServer {
         }, async () => {
             const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/customers`, 'GET');
             return {
-                content: [{ type: 'text', text: JSON.stringify(res.data) }]
+                content: [{ type: 'text', text: JSON.stringify(res) }]
             };
         });
     }
-    async makeRequestAPi(url, method) {
+    async makeRequestAPi(url, method, bodyPayload) {
+        console.log(`Request: [${method}]${url} body ${bodyPayload}`);
         const res = await fetch(url, {
             method,
             headers: {
                 'Accept': 'application/json'
-            }
+            },
+            body: bodyPayload ? bodyPayload : undefined
         });
         const data = await res.json();
+        console.log({ 'res': data });
         return data;
     }
-    async start() {
-        const transport = new stdio_js_1.StdioServerTransport();
-        await this.server.connect(transport);
-        console.error('MCP server runing os stdio');
+    async startStioTransport() {
+        const stdioTransport = new stdio_js_1.StdioServerTransport();
+        await this.server.connect(stdioTransport);
+        console.error('MCP server runing stio');
+    }
+    async getServerInstance() {
+        console.error('MCP server runing HTTP/SSE');
+        return this.server;
     }
 }
 exports.MCPServer = MCPServer;
