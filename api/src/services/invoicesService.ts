@@ -6,8 +6,8 @@ import { InvoicesRepository } from '../repositories/invoicesRepository'
 export class InvoicesService {
     constructor(private readonly invoicesRepository: InvoicesRepository) { }
 
-    async findByCustomerId(customerId: number) {
-        return await this.invoicesRepository.findByCustomerId(customerId)
+    async find() {
+        return await this.invoicesRepository.find()
     }
 
     async pay(invoiceId: number) {

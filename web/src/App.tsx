@@ -1,23 +1,16 @@
 import { useEffect, useState } from 'react'
 
-import './App.css'
-import { runCommand } from './services/aiCommand'
-import { formatDate, formatMoney } from './utils/format'
+// import './App.css'
+// import { runCommand } from './services/aiCommand'
+import { InvoicesTable } from './components/InvoicesTable';
+import { Header } from './components/Header';
 
 
 function App() {
-  const [command, setCommand] = useState<string>('')
-  const [result, setResult] = useState({ data: '' })
-  const [loading, setLoading] = useState(false)
-  const [invoices, setInvoices] = useState<Array<{
-    id: number,
-    amount: number,
-    status: string,
-    dueDate: string,
-    payedAt: string,
-    refundedAt: string,
-    createdAt: string,
-  }>>([])
+  // const [command, setCommand] = useState<string>('')
+  // const [result, setResult] = useState({ data: '' })
+  // const [loading, setLoading] = useState(false)
+  const [invoices, setInvoices] = useState([])
   const [refreshInterval, setRefreshInterval] = useState(10);
 
 
@@ -35,29 +28,31 @@ function App() {
     handleInvoices()
   }, [])
 
-  async function handlerommand() {
-    setLoading(true)
-    const result = await runCommand(command)
-      .finally(() => setLoading(false))
+  // async function handlerommand() {
+  //   setLoading(true)
+  //   const result = await runCommand(command)
+  //     .finally(() => setLoading(false))
 
-    setCommand('')
-    setResult(result)
-  }
+  //   setCommand('')
+  //   setResult(result)
+  // }
 
   async function handleInvoices() {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/invoices/customers/9`)
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/invoices`)
     const json = await res.json()
 
     setInvoices(json.data)
   }
 
   return (
-    <main>
-      <label>
+    <main className='bg-gray-900 h-screen w-full p-8 flex flex-col justify-start align-top'>
+      <Header />
+      <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white pb-2 max-w-sm'>
         Refresh every:
         <select
           value={refreshInterval}
           onChange={e => setRefreshInterval(Number(e.target.value))}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
           <option value={0}>Never</option>
           <option value={5}>5 seconds</option>
@@ -67,33 +62,12 @@ function App() {
         </select>
       </label>
 
-      <aside>
-        <h4> Invoices</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Status</th>
-              <th>Amount</th>
-              <th>DueDate</th>
-              <th>payedAt</th>
-              <th>RefundeAt</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoices.map((inv) => (
-              <tr key={inv.id}>
-                <td>{inv.id}</td>
-                <td>{inv.status}</td>
-                <td>{formatMoney(inv.amount)}</td>
-                <td>{formatDate(inv.dueDate)}</td>
-                <td>{formatDate(inv.payedAt)}</td>
-                <td>{formatDate(inv.refundedAt)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <aside className='flex flex-col justify-center bg-slate-800 p-4'>
+        <h1 className='pb-2 text-zinc-300 text-3xl font-semibold'>Invoices</h1>
+        <InvoicesTable invoices={invoices} />
       </aside>
+
+
       {/* <section>
         <h4>How can I help?</h4>
         <textarea placeholder='What do you want to do?' onChange={(e) => setCommand(e.target.value)} />

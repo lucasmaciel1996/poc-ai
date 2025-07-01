@@ -5,12 +5,10 @@ import { PrismaClient } from "../../generated/prisma";
 export class InvoicesRepository {
     constructor(private readonly db: PrismaClient) { }
 
-    async findByCustomerId(customerId: number) {
+    async find() {
         const res = await this.db.invoice.findMany({
-            where:{
-                customerId:{
-                    equals:customerId
-                }
+            include:{
+                customer:true
             }
         })
         return res

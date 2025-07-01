@@ -4,6 +4,7 @@
 model Customer {
   id Int @id @default(autoincrement())
   email String  @unique
+  avatar String
   name  String?
   invoices Invoice[]
 }

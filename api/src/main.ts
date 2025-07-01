@@ -11,7 +11,7 @@ const invoiceController = container.get<InvoicesControler>('InvoicesControler')
 const aiControler = container.get<AIControler>('AIControler')
 const customersControler = container.get<CustomersControler>('CustomersControler')
 
-app.get('/invoices/customers/:customerId', invoiceController.findInvoicesByCustomerId.bind(invoiceController))
+app.get('/invoices', invoiceController.find.bind(invoiceController))
 app.post('/invoices/:invoiceId/pay', invoiceController.pay.bind(invoiceController))
 app.post('/invoices/:invoiceId/refund', invoiceController.refund.bind(invoiceController))
 

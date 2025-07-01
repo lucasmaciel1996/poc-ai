@@ -26,12 +26,9 @@ export class MCPServer {
     private setupToolHandlers() {
         this.server.registerTool('list_invoices', {
             title: 'List all invoice',
-            description: 'Give a customerId return all list of invoices',
-            inputSchema: {
-                customerId: z.number(),
-            }
-        }, async ({ customerId }) => {
-            const res = await fetch(`${process.env.INVOICE_API_URL}/invoices/customers/${customerId}`,{
+            description: 'List all list of invoices with customer',
+        }, async () => {
+            const res = await fetch(`${process.env.INVOICE_API_URL}/invoices`,{
                 method:'GET',
                 headers:{
                   'Accept':'application/json'  
