@@ -25,7 +25,7 @@ class MCPServer {
             inputSchema: {
                 amount: zod_1.z.number(),
                 customerId: zod_1.z.number(),
-                dueDate: zod_1.z.date(),
+                dueDate: zod_1.z.string(),
             }
         }, async ({ amount, customerId, dueDate }) => {
             const body = JSON.stringify({

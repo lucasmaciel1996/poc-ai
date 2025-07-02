@@ -18,3 +18,15 @@ export function formatDate(date: string, language = 'pr-BR', timeStyle = false) 
 
     return new Intl.DateTimeFormat(language, conf).format(new Date(date))
 }
+
+type Label ='green'|'red'|'gray'|'yellow'
+export function formatStatusVariant(status:'paid'|'refund'|'open'):Label {
+    const labelMap:Record<string,string> = {
+        paid: 'green',
+        refund: 'red',
+        open: 'yellow',
+        unknown:'gray'
+    }
+
+    return labelMap[status] as Label ??labelMap['unknown']
+}

@@ -67,7 +67,7 @@ async function startHttp() {
             }
         }
     });
-    return await app.listen(3001, () => console.log('Start MCP'));
+    return await app.listen(3001, () => console.log('Start HTTP'));
 }
 async function main() {
     startHttp().catch(err => console.error(err));

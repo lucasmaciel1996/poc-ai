@@ -45,7 +45,7 @@ function App() {
   }
 
   return (
-    <main className='bg-gray-900 h-screen w-full p-8 flex flex-col justify-start align-top'>
+    <main className='h-full bg-gray-900 w-full p-8 flex flex-col justify-start align-top'>
       <Header />
       <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white pb-2 max-w-sm'>
         Refresh every:
@@ -62,7 +62,7 @@ function App() {
         </select>
       </label>
 
-      <aside className='flex flex-col justify-center bg-slate-800 p-4'>
+      <aside className='flex flex-col justify-center bg-slate-800 p-4 rounded-xl'>
         <h1 className='pb-2 text-zinc-300 text-3xl font-semibold'>Invoices</h1>
         <InvoicesTable invoices={invoices} />
       </aside>

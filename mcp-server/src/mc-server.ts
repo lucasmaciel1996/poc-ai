@@ -28,7 +28,7 @@ export class MCPServer {
             inputSchema: {
                 amount: z.number(),
                 customerId: z.number(),
-                dueDate: z.date(),
+                dueDate: z.string(),
             }
         }, async ({
             amount,

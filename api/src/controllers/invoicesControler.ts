@@ -16,16 +16,17 @@ export class InvoicesControler {
         }
 
 
-         await this.invoicesService.create({
+        await this.invoicesService.create({
             amount,
             customerId,
             dueDate
         })
-        return reply.send({status:'INVOICE_CREATED'})
+        return reply.send({ status: 'INVOICE_CREATED' })
     }
 
     async find(__: FastifyRequest, reply: FastifyReply) {
-       return await this.invoicesService.find()
+        const invoices = await this.invoicesService.find()
+        return reply.send({ data: invoices })
     }
 
     async pay(request: FastifyRequest, reply: FastifyReply) {
@@ -33,7 +34,7 @@ export class InvoicesControler {
 
         await this.invoicesService.pay(Number(invoiceId))
 
-        return reply.send({status:'INVOICE_PAID'})
+        return reply.send({ status: 'INVOICE_PAID' })
     }
 
     async refund(request: FastifyRequest, reply: FastifyReply) {
@@ -41,6 +42,6 @@ export class InvoicesControler {
 
         await this.invoicesService.refund(Number(invoiceId))
 
-        return reply.send({status:'INVOICE_REFUND'})
+        return reply.send({ status: 'INVOICE_REFUND' })
     }
 }

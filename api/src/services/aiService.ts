@@ -23,7 +23,8 @@ export class AIService {
                   },
                   {
                     role: "user",
-                    content: `Aqui está o JSON com faturas: \n\n${JSON.stringify(invoicesJson, null, 2)}`
+                    content: `Aqui está o JSON com faturas: \n\n${JSON.stringify(invoicesJson, null, 2)}. 
+                    Analise e apresente somente informações com base exclusiva no conteúdo fornecido. Não invente, não gere dados adicionais e não extrapole as informações do JSON.`
                   },
                   {
                     role: "user",

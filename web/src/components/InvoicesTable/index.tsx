@@ -1,7 +1,8 @@
-import { formatDate, formatMoney } from "../../utils/format"
+import { formatDate, formatMoney, formatStatusVariant } from "../../utils/format"
 import { Badge } from "../Badge"
 
 type Costumer = {
+    id: string
     email: string,
     avatar: string,
     name: string
@@ -38,7 +39,7 @@ export function InvoicesTable({ invoices }: { invoices: Invoice[] }) {
                         <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                             <img className="w-10 h-10 rounded-full" src={inv.customer.avatar} alt="Jese image" />
                             <div className="ps-3">
-                                <div className="text-base font-semibold">{inv.customer.name}</div>
+                                <div className="text-base font-semibold">#{inv.customer.id} {inv.customer.name}</div>
                                 <div className="font-normal text-gray-500">{inv.customer.email}</div>
                             </div>
                         </th>
@@ -47,11 +48,7 @@ export function InvoicesTable({ invoices }: { invoices: Invoice[] }) {
 
                         <th className="px-6 py-4" >
                             {Badge({
-                                text: inv.status, variant: {
-                                    paid: 'green',
-                                    refund: 'red',
-                                    open: 'gray'
-                                }[inv.status]
+                                text: inv.status, variant: formatStatusVariant(inv.status)
                             })}
                         </th>
                         <td className="px-6 py-4">{formatDate(inv.dueDate)}</td>
