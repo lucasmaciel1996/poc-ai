@@ -51,7 +51,8 @@ export function ModalAI(payload: ModalAiProp) {
                         <div>
                             <h4 className='pb-2 text-zinc-300 text-2xl font-semibold'>How can I help?</h4>
                             <textarea
-                                className='block p-2.5 w-full  text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-sm' placeholder='What do you want to do?'
+                                className='block p-2.5 w-full  text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-sm'
+                                placeholder='Ask me something'
                                 value={command}
                                 onChange={(e) => {
                                     setCommand(e.target.value)
