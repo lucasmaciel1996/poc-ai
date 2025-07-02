@@ -28,9 +28,9 @@ export function InvoicesTable({ invoices }: { invoices: Invoice[] }) {
                     <th scope="col" className="px-6 py-3">Amount</th>
                     <th scope="col" className="px-6 py-3">Status</th>
                     <th scope="col" className="px-6 py-3">Due Date</th>
-                    <th scope="col" className="px-6 py-3">PaidAt</th>
-                    <th scope="col" className="px-6 py-3">RefundeAt</th>
-                    <th scope="col" className="px-6 py-3">createdAt</th>
+                    <th scope="col" className="px-6 py-3">Paid At</th>
+                    <th scope="col" className="px-6 py-3">Refunded</th>
+                    <th scope="col" className="px-6 py-3">Created At</th>
                 </tr>
             </thead>
             <tbody>

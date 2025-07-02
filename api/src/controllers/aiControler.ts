@@ -6,10 +6,11 @@ export class AIControler {
     constructor(private readonly aIService: AIService) { }
 
     async generateCommand(request: FastifyRequest, reply: FastifyReply) {
-        const { command,data=null } = request.body as Record<string, string>
+        const { command = '', data = '' } = JSON.parse(request.body as any) 
+        const result = await this.aIService.generateCommand(command, data)
+        
+        const responseText = result.choices[0] ? result.choices[0].message.content : ''
 
-        const result = await this.aIService.generateCommand(command,data)
-
-        return reply.send({ data: result })
+        return reply.send({ responseText, command })
     }
 }
