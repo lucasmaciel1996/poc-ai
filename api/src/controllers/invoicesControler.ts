@@ -9,11 +9,7 @@ export class InvoicesControler {
             amount,
             customerId,
             dueDate
-        } = request.body as {
-            amount: number,
-            customerId: number,
-            dueDate: string
-        }
+        } = typeof request.body === 'string' ? JSON.parse(request.body as any) : request.body
 
 
         await this.invoicesService.create({

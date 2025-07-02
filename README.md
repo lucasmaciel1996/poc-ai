@@ -17,13 +17,19 @@
 ```json
 {
   "mcpServers": {
-    "macielLocal": {
+    "macielSTIO": {
       "command": "node",
       "args": [
-        "PATH/poc-ia/mcp-server/build/server.js"
+        "PATH/poc-ia/mcp-server/build/server-stio.js"
       ],
       "env": {
         "INVOICE_API_URL":"http://localhost:3000"
+      }
+    },
+    "macielLocalHTTP": {
+      "url":"http://localhost:3001/mcp",
+      "headers": {
+        "APP_VERSION":"0.0.1"
       }
     }
   }

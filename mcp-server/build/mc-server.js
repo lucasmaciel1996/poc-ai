@@ -19,25 +19,6 @@ class MCPServer {
         this.setupToolHandlers();
     }
     setupToolHandlers() {
-        this.server.registerTool('create_invoice', {
-            title: 'Create a new invoice',
-            description: 'Create a new invoice for customer',
-            inputSchema: {
-                amount: zod_1.z.number(),
-                customerId: zod_1.z.number(),
-                dueDate: zod_1.z.string(),
-            }
-        }, async ({ amount, customerId, dueDate }) => {
-            const body = JSON.stringify({
-                amount,
-                customerId,
-                dueDate
-            });
-            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices`, 'POST', body);
-            return {
-                content: [{ type: 'text', text: JSON.stringify(res) }]
-            };
-        });
         this.server.registerTool('list_invoices', {
             title: 'List all invoice',
             description: 'List all list of invoices with customer',
@@ -67,6 +48,26 @@ class MCPServer {
             }
         }, async ({ invoiceId }) => {
             const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/pay`, 'POST');
+            return {
+                content: [{ type: 'text', text: JSON.stringify(res) }]
+            };
+        });
+        
+        this.server.registerTool('create_invoice', {
+            title: 'Create a new invoice',
+            description: 'Create a new invoice for customer',
+            inputSchema: {
+                amount: zod_1.z.number(),
+                customerId: zod_1.z.number(),
+                dueDate: zod_1.z.string(),
+            }
+        }, async ({ amount, customerId, dueDate }) => {
+            const body = JSON.stringify({
+                amount,
+                customerId,
+                dueDate
+            });
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices`, 'POST', body);
             return {
                 content: [{ type: 'text', text: JSON.stringify(res) }]
             };

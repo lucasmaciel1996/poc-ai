@@ -21,31 +21,6 @@ export class MCPServer {
     }
 
     private setupToolHandlers() {
-
-        this.server.registerTool('create_invoice', {
-            title: 'Create a new invoice',
-            description: 'Create a new invoice for customer',
-            inputSchema: {
-                amount: z.number(),
-                customerId: z.number(),
-                dueDate: z.string(),
-            }
-        }, async ({
-            amount,
-            customerId,
-            dueDate
-        }) => {
-            const body = JSON.stringify({
-                amount,
-                customerId,
-                dueDate
-            })
-            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices`, 'POST', body)
-
-            return {
-                content: [{ type: 'text', text: JSON.stringify(res) }]
-            }
-        })
         this.server.registerTool('list_invoices', {
             title: 'List all invoice',
             description: 'List all list of invoices with customer',
@@ -81,6 +56,31 @@ export class MCPServer {
 
             return {
                 content: [{ type: 'text', text:JSON.stringify(res) }]
+            }
+        })
+        
+        this.server.registerTool('create_invoice', {
+            title: 'Create a new invoice',
+            description: 'Create a new invoice for customer',
+            inputSchema: {
+                amount: z.number(),
+                customerId: z.number(),
+                dueDate: z.string(),
+            }
+        }, async ({
+            amount,
+            customerId,
+            dueDate
+        }) => {
+            const body = JSON.stringify({
+                amount,
+                customerId,
+                dueDate
+            })
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices`, 'POST', body)
+
+            return {
+                content: [{ type: 'text', text: JSON.stringify(res) }]
             }
         })
 
