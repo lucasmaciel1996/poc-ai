@@ -19,12 +19,15 @@ export class AIService {
             messages:[
                 {
                     role: "system",
-                    content: "Você é um assistente que responde perguntas com base nos dados JSON fornecidos."
+                    content: "You are an assistent who answers questions based on provider's 'JSON' data format."
                   },
                   {
                     role: "user",
-                    content: `Aqui está o JSON com faturas: \n\n${JSON.stringify(invoicesJson, null, 2)}. 
-                    Analise e apresente somente informações com base exclusiva no conteúdo fornecido. Não invente, não gere dados adicionais e não extrapole as informações do JSON.`
+                    content: `Here is the JSON wiith invoices: \n\n${JSON.stringify(invoicesJson, null, 2)}. 
+                    Only analyze and present information based solely on the content provided, Don't invent, don't generate additional data and don't extrapolate JSON information.
+                    When asked about other content, respond that you cannot provide information about other content.
+                    It does not inform that your analysis was done in JSON send.
+                    `
                   },
                   {
                     role: "user",

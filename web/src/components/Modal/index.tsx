@@ -34,10 +34,10 @@ export function ModalAI(payload: ModalAiProp) {
 
     return (
         <div
-            className={`${payload.open ? '' : 'hidden'} fixed inset-10 z-50 flex justify-center items-start w-full h-full overflow-y-auto overflow-x-hidden mt-1 ml-60`}
+            className={`${payload.open ? '' : 'hidden'} fixed inset-10 z-50 flex justify-center items-start w-full h-full overflow-y-auto overflow-x-hidden `}
         >
             <div className="relative p-1 w-full max-w-xl max-h-full">
-                <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700/50">
                     <button
                         type="button"
                         className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -67,7 +67,7 @@ export function ModalAI(payload: ModalAiProp) {
                             disabled={loading || !command}
                         >Command</button>
 
-                        <div className="bg-slate-800 text-yellow-50 p-2 my-2 rounded min-h-40">
+                        <div className="bg-slate-800/80 text-yellow-50 p-2 my-2 rounded min-h-40">
                             <code className="">
                                 {loading ? (<p>Loading...</p>) : result}
                             </code>
