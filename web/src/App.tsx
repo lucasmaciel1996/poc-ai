@@ -38,7 +38,7 @@ function App() {
   }
 
   return (
-    <main className='h-full bg-gray-900 w-full p-8 flex flex-col justify-start align-top'>
+    <main className='h-screen bg-gray-900 w-full p-8 flex flex-col justify-start align-top'>
       <Header />
 
       <div className='w-1/4 mb-2 text-sm font-medium text-gray-900 dark:text-white pb-2 max-w-sm'>
