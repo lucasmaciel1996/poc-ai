@@ -39,4 +39,14 @@ export class InvoicesService {
             refundedAt: new Date()
         })
     }
+    async cancel(invoiceId: number) {
+        const invoice = await this.invoicesRepository.findById(invoiceId)
+        if (!invoice) {
+            throw new BadRequestError('Invoice not found','INVOICE_NOT_FOUND')
+        }
+
+         await this.invoicesRepository.update(invoiceId, {
+            status: 'cancel',
+        })
+    }
 }

@@ -15,6 +15,7 @@ app.get('/invoices', invoiceController.find.bind(invoiceController))
 app.post('/invoices', invoiceController.create.bind(invoiceController))
 app.post('/invoices/:invoiceId/pay', invoiceController.pay.bind(invoiceController))
 app.post('/invoices/:invoiceId/refund', invoiceController.refund.bind(invoiceController))
+app.post('/invoices/:invoiceId/cancel', invoiceController.cancel.bind(invoiceController))
 
 
 app.get('/customers', customersControler.find.bind(customersControler))

@@ -58,6 +58,20 @@ export class MCPServer {
                 content: [{ type: 'text', text:JSON.stringify(res) }]
             }
         })
+
+        this.server.registerTool('cancel_invoice', {
+            title: 'Cancel one invoice',
+            description: 'Give a invoiceId cancel one invocie',
+            inputSchema: {
+                invoiceId: z.number(),
+            }
+        }, async ({ invoiceId }) => {
+            const res = await this.makeRequestAPi(`${process.env.INVOICE_API_URL}/invoices/${invoiceId}/cancel`, 'POST')
+
+            return {
+                content: [{ type: 'text', text:JSON.stringify(res) }]
+            }
+        })
         
         this.server.registerTool('create_invoice', {
             title: 'Create a new invoice',

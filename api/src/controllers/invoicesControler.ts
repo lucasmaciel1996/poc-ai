@@ -38,6 +38,14 @@ export class InvoicesControler {
 
         await this.invoicesService.refund(Number(invoiceId))
 
-        return reply.send({ status: 'INVOICE_REFUND' })
+        return reply.send({ status: 'INVOICE_REFUNDED' })
+    }
+
+    async cancel(request: FastifyRequest, reply: FastifyReply) {
+        const { invoiceId } = request.params as Record<string, number>
+
+        await this.invoicesService.cancel(Number(invoiceId))
+
+        return reply.send({ status: 'INVOICE_CANCELED' })
     }
 }
