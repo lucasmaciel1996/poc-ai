@@ -7,7 +7,7 @@ type ModalAiProp = {
 }
 
 export function ModalAI(payload: ModalAiProp) {
-    const [command, setCommand] = useState(`How many invoices are status open ?`)
+    const [command, setCommand] = useState(`Quantas fatura foram paga neste mês?`)
     const [result, setResult] = useState('')
     const [loading, setLoading] = useState(false)
 

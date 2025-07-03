@@ -20,17 +20,17 @@ export class InvoicesService {
 
     async pay(invoiceId: number) {
         const invoice = await this.invoicesRepository.findById(invoiceId)
-        if (invoice?.payedAt) return
+        if (invoice?.paidAt) return
 
          await this.invoicesRepository.update(invoiceId, {
             status: 'paid',
-            payedAt: new Date()
+            paidAt: new Date()
         })
     }
 
     async refund(invoiceId: number) {
         const invoice = await this.invoicesRepository.findById(invoiceId)
-        if (!invoice?.payedAt) {
+        if (!invoice?.paidAt) {
             throw new BadRequestError('Invoice not paid','INVOICE_NOT_PAID')
         }
 

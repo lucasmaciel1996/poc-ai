@@ -10,38 +10,54 @@ export class AIService {
         })
     }
 
-    async generateCommand(command: string,invoicesJson:unknown) {
+    async generateCommand(command: string, data: unknown) {
         // https://medium.com/data-science-in-your-pocket/mcp-servers-using-chatgpt-cd8455e6cbe1
+        const nowdDate = new Date().toISOString()
 
-   console.log({
-    command, invoicesJson
-   })
+        const template = `
+            Você é um agente de IA especializado em analisar dados de faturas enviados via JSON.
+
+            Seu objetivo é responder perguntas relacionadas às datas da fatura (como data de criação, vencimento, pagamento ou estorno).
+
+            Responda somente com base no conteúdo enviado no JSON. Se alguma informação estiver ausente ou for nula, indique isso de forma clara.
+
+            Analise especialmente os seguintes campos:
+            - dueDate: data de vencimento
+            - createdAt: data de criação
+            - paidAt: data de pagamento (pode ser null)
+            - paidAt: data de pagamento (pode ser null)
+            - canceledAt: data de cancelamento (pode ser null)
+            - customerId: Client que pertece a datura.
+
+            Regras importantes:
+            - Se dueDate < data atual e paidAt for null, a fatura está vencida.
+            - Se paidAt estiver presente, a fatura foi paga.
+            - Se refundedAt estiver presente, a fatura foi estornada.
+            - Se canceledAt estiver presente, a fatura foi cancelada.
+            - Para perguntas sobre “faturas pagas hoje”, compare a data de 'paidAt' com a data atual (ignorando a hora). Se a data for igual, considere que a fatura foi paga hoje.
+
+            Sempre que possível, apresente as datas no formato "dd/mm/aaaa".
+
+            Evite criar informações que não estão no JSON. Seja claro e direto.
+            Evite informar que análise foi feito com JSON não informe JSON na respota.
+
+            **Para efeito de análise, considere que a data atual é "${nowdDate}.**
+        `
         const result = await this.openAi.chat.completions.create({
             model: 'gpt-4.1',
-            messages:[
+            messages: [
                 {
                     role: "system",
-                    content: `You are an assistent who answers questions based on provider's 'JSON' data format.
-                    invoice:
-                    dueDate: Data de venciamento formato DD-MM-YYYYTHH:MM
-                    payedAt: Data da cobrança
-                    status: open (aberto) cancel(Cancelado) refund(Estornado) paid(pago)
-                    createdAt: Data que foi criado fatura
-                    amout: Valor da fatura
-                    `
-                  },
-                  {
+                    content: template
+                },
+                {
                     role: "user",
-                    content: `Here is the JSON wiith invoices: \n\n${JSON.stringify(invoicesJson, null, 2)}. 
-                    Only analyze and present information based solely on the content provided, Don't invent, don't generate additional data and don't extrapolate JSON information.
-                    When asked about other content, respond that you cannot provide information about other content.
-                    It does not inform that your analysis was done in JSON send.
-                    `
-                  },
-                  {
+                    content: `Aqui está o JSON com as faturas: \n\n${JSON.stringify(data, null, 2)}.`
+                },
+                {
                     role: "user",
                     content: command
-                  }
+                }
             ]
         })
 

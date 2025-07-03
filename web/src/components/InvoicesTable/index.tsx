@@ -12,9 +12,10 @@ type Invoice = {
     amount: number,
     status: 'paid' | 'refund' | 'open',
     dueDate: string,
-    payedAt: string,
+    paidAt: string,
     refundedAt: string
     createdAt: string
+    canceledAt: string
     customer: Costumer
 }
 
@@ -30,6 +31,7 @@ export function InvoicesTable({ invoices }: { invoices: Invoice[] }) {
                     <th scope="col" className="px-6 py-3">Due Date</th>
                     <th scope="col" className="px-6 py-3">Paid At</th>
                     <th scope="col" className="px-6 py-3">Refunded</th>
+                    <th scope="col" className="px-6 py-3">canceled At</th>
                     <th scope="col" className="px-6 py-3">Created At</th>
                 </tr>
             </thead>
@@ -52,8 +54,9 @@ export function InvoicesTable({ invoices }: { invoices: Invoice[] }) {
                             })}
                         </th>
                         <td className="px-6 py-4">{formatDate(inv.dueDate)}</td>
-                        <td className="px-6 py-4">{formatDate(inv.payedAt)}</td>
+                        <td className="px-6 py-4">{formatDate(inv.paidAt)}</td>
                         <td className="px-6 py-4">{formatDate(inv.refundedAt)}</td>
+                        <td className="px-6 py-4">{formatDate(inv.canceledAt)}</td>
                         <td className="px-6 py-4">{formatDate(inv.createdAt, 'pt-BR', true)}</td>
 
                     </tr>
