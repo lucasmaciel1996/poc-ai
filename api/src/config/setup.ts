@@ -26,7 +26,8 @@ async function seed() {
       customerId: customer1.id,
       dueDate: new Date('2025-05-05T00:00:00.000Z'),
       createdAt:new Date('2025-04-05T00:00:00.000Z'),
-      status: 'open'
+      paidAt: new Date('2025-05-05T00:00:00.000Z'),
+      status: 'paid'
     },
     {
       amount: Math.floor(Math.random() * 100 + 40),
@@ -50,6 +51,13 @@ async function seed() {
       dueDate: new Date('2025-07-05T00:00:00.000Z'),
       createdAt: new Date('2025-06-05T00:00:00.000Z'),
       status: 'open'
+    },
+    {
+      amount: Math.floor(Math.random() * 100 + 40),
+      customerId: customer2.id,
+      dueDate: new Date('2025-07-05T00:00:00.000Z'),
+      paidAt: new Date('2025-07-06T00:00:00.000Z'),
+      status: 'paid'
     },
     {
       amount: Math.floor(Math.random() * 100 + 40),
