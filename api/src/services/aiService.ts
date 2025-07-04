@@ -27,7 +27,7 @@ export class AIService {
             - paidAt: data de pagamento (pode ser null)
             - paidAt: data de pagamento (pode ser null)
             - canceledAt: data de cancelamento (pode ser null)
-            - customerId: Client que pertece a datura.
+            - customerId: Cliente que pertece a fatura.
 
             Regras importantes:
             - Se dueDate < data atual e paidAt for null, a fatura está vencida.
